@@ -1,0 +1,1268 @@
+{
+  "metadata": {
+    "title": "The Stoic Web Data",
+    "version": "1.0",
+    "generationGroups": [
+      {
+        "id": "roots",
+        "range": [
+          0,
+          3
+        ],
+        "label": "Pre-Stoic Roots"
+      },
+      {
+        "id": "early",
+        "range": [
+          4,
+          9
+        ],
+        "label": "Early Stoa (The Founding)"
+      },
+      {
+        "id": "middle",
+        "range": [
+          10,
+          11
+        ],
+        "label": "Middle Stoa"
+      },
+      {
+        "id": "roman_transition",
+        "range": [
+          12,
+          12
+        ],
+        "label": "Roman Transition"
+      },
+      {
+        "id": "late",
+        "range": [
+          13,
+          16
+        ],
+        "label": "Late Stoa (Roman Empire)"
+      },
+      {
+        "id": "decline",
+        "range": [
+          17,
+          17
+        ],
+        "label": "Decline"
+      },
+      {
+        "id": "modern",
+        "range": [
+          18,
+          20
+        ],
+        "label": "Modern Legacy"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "socrates",
+      "label": "Socrates",
+      "date": "470–399 BC",
+      "type": "root",
+      "generation": 0,
+      "wiki": "https://en.wikipedia.org/wiki/Socrates",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Born in Athens to a stonemason and a midwife. He served as a hoplite soldier with distinction in the Peloponnesian War before turning to philosophy."
+        },
+        {
+          "title": "Contribution",
+          "content": "He wrote nothing, but his method of questioning (the Socratic Method) shifted philosophy from the study of nature to the study of ethics. He argued that 'Virtue is Knowledge'—if you know what is good, you will do it."
+        },
+        {
+          "title": "Legacy",
+          "content": "Sentenced to death by hemlock for 'corrupting the youth.' He is the intellectual grandfather of Stoicism, Cynicism, and Platonism."
+        }
+      ]
+    },
+    {
+      "id": "plato",
+      "label": "Plato",
+      "date": "428–348 BC",
+      "type": "academy",
+      "generation": 1,
+      "wiki": "https://en.wikipedia.org/wiki/Plato",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "An aristocrat and wrestler from one of Athens' noblest families. He was Socrates' most famous student."
+        },
+        {
+          "title": "Contribution",
+          "content": "Founded the Academy. He proposed the Theory of Forms—that the physical world is a shadow of a higher, perfect reality. He argued for a tripartite soul (Reason, Spirit, Appetite)."
+        },
+        {
+          "title": "Relation to Stoicism",
+          "content": "The Stoics revered his emphasis on virtue but rejected his idealism. They believed only the material world existed, rejecting Plato's 'Forms'."
+        }
+      ]
+    },
+    {
+      "id": "antisthenes",
+      "label": "Antisthenes",
+      "date": "445–365 BC",
+      "type": "cynic",
+      "generation": 1,
+      "wiki": "https://en.wikipedia.org/wiki/Antisthenes",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A pupil of Socrates who was present at his death. He was older than Plato and despised pride and wealth."
+        },
+        {
+          "title": "Contribution",
+          "content": "Considered the founder of Cynicism. He took Socrates' endurance to the extreme, teaching that virtue is the *only* thing needed for happiness and that social norms (wealth, reputation) are distractions."
+        },
+        {
+          "title": "Legacy",
+          "content": "His 'hard' ethics directly paved the way for the rigorous side of Stoicism."
+        }
+      ]
+    },
+    {
+      "id": "xenophon",
+      "label": "Xenophon",
+      "date": "430–354 BC",
+      "type": "historian",
+      "generation": 1,
+      "wiki": "https://en.wikipedia.org/wiki/Xenophon",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A soldier and mercenary commander (famous for the 'Anabasis'). He was a pragmatic student of Socrates."
+        },
+        {
+          "title": "Contribution",
+          "content": "His 'Memorabilia' recorded the practical, day-to-day ethics of Socrates, portraying him not as a master logician (like Plato did) but as a teacher of self-control and endurance."
+        },
+        {
+          "title": "Legacy",
+          "content": "Zeno of Citium read Xenophon's works after his shipwreck, which inspired him to pursue philosophy."
+        }
+      ]
+    },
+    {
+      "id": "aristotle",
+      "label": "Aristotle",
+      "date": "384–322 BC",
+      "type": "rival",
+      "generation": 2,
+      "wiki": "https://en.wikipedia.org/wiki/Aristotle",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Student of Plato and tutor to Alexander the Great. Founded the Lyceum (Peripatetic school)."
+        },
+        {
+          "title": "Contribution",
+          "content": "The master of classification. Crucially, he argued that Virtue is *necessary* for happiness but not *sufficient*—you also need 'external goods' like health, wealth, and luck."
+        },
+        {
+          "title": "Conflict",
+          "content": "This was the major battleground with Stoicism. The Stoics argued Aristotle was weak for making happiness dependent on luck."
+        }
+      ]
+    },
+    {
+      "id": "polemo",
+      "label": "Polemo",
+      "date": "d. 270 BC",
+      "type": "academy",
+      "generation": 2,
+      "wiki": "https://en.wikipedia.org/wiki/Polemo",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A wealthy, debauched youth who stumbled into Xenocrates' lecture drunk and was converted to philosophy on the spot."
+        },
+        {
+          "title": "Contribution",
+          "content": "Head of the Academy. He focused almost entirely on ethics, teaching that we must 'live according to nature' (kata physin)."
+        },
+        {
+          "title": "Legacy",
+          "content": "Zeno studied under him for 10 years. The Stoic definition of happiness is directly borrowed from Polemo's teachings."
+        }
+      ]
+    },
+    {
+      "id": "diogenes",
+      "label": "Diogenes",
+      "date": "412–323 BC",
+      "type": "cynic",
+      "generation": 2,
+      "wiki": "https://en.wikipedia.org/wiki/Diogenes",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Exiled from Sinope for debasing the currency. He lived in a large ceramic jar (pithos) in Athens."
+        },
+        {
+          "title": "Contribution",
+          "content": "The archetypal Cynic. He walked with a lamp in daylight looking for an 'honest man.' He rejected all societal conventions, seeing himself as a 'citizen of the world' (cosmopolitan)."
+        },
+        {
+          "title": "Legacy",
+          "content": "The Stoics claimed him as a Sage. Zeno's 'Republic' was largely an updated, more civilized version of Diogenes' radical politics."
+        }
+      ]
+    },
+    {
+      "id": "stilpo",
+      "label": "Stilpo",
+      "date": "325–250 BC",
+      "type": "megarian",
+      "generation": 2,
+      "wiki": "https://en.wikipedia.org/wiki/Stilpo",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A philosopher of the Megarian school, famous for logic chops and dialectic traps."
+        },
+        {
+          "title": "Contribution",
+          "content": "He taught Apatheia (freedom from suffering) and strict logic. He influenced Zeno's view that the wise man is self-sufficient."
+        },
+        {
+          "title": "Legacy",
+          "content": "Zeno learned his dialectic (logic) skills from Stilpo, which became the 'bones' of the Stoic system."
+        }
+      ]
+    },
+    {
+      "id": "crates",
+      "label": "Crates",
+      "date": "365–285 BC",
+      "type": "cynic",
+      "generation": 3,
+      "wiki": "https://en.wikipedia.org/wiki/Crates_of_Thebes",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A wealthy Theban who threw his money into the sea to become a philosopher. Known as the 'Door-Opener' because he would enter houses to mediate family disputes."
+        },
+        {
+          "title": "Contribution",
+          "content": "Zeno's primary teacher. When Zeno was shy about carrying a pot of lentil soup (a low-class food), Crates smashed it with his staff, covering Zeno in soup to teach him not to care about public opinion."
+        },
+        {
+          "title": "Legacy",
+          "content": "He represents the lineage of 'Shamelessness' and practical ethics passed to Stoicism."
+        }
+      ]
+    },
+    {
+      "id": "zeno",
+      "label": "Zeno of Citium",
+      "date": "334–262 BC",
+      "type": "stoic",
+      "generation": 4,
+      "wiki": "https://en.wikipedia.org/wiki/Zeno_of_Citium",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A Phoenician merchant from Cyprus. He was shipwrecked in Athens, losing his cargo. He famously said, 'I made a prosperous voyage when I suffered shipwreck,' as it led him to philosophy."
+        },
+        {
+          "title": "Contribution",
+          "content": "THE FOUNDER. He studied under Cynics, Academics, and Megarians, synthesizing them into a new system at the Stoa Poikile (Painted Porch). He taught that Logic, Physics, and Ethics are inseparable parts of a single system."
+        },
+        {
+          "title": "Legacy",
+          "content": "Defined the goal of life: 'Happiness is a good flow of life' achieved by living in agreement with Nature."
+        }
+      ]
+    },
+    {
+      "id": "epicurus",
+      "label": "Epicurus",
+      "date": "341–270 BC",
+      "type": "rival",
+      "generation": 4,
+      "wiki": "https://en.wikipedia.org/wiki/Epicurus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Born on Samos. Founded 'The Garden', a commune allowing women and slaves."
+        },
+        {
+          "title": "Philosophy",
+          "content": "The Anti-Stoic. He argued that the goal of life is Pleasure (defined as the absence of pain and fear, 'ataraxia'). He believed the gods do not care about humans and the soul dies with the body."
+        },
+        {
+          "title": "Rivalry",
+          "content": "Stoics and Epicureans were the two great dogmatic schools of the era, fighting over whether Virtue or Pleasure was the Supreme Good."
+        }
+      ]
+    },
+    {
+      "id": "arcesilaus",
+      "label": "Arcesilaus",
+      "date": "316–241 BC",
+      "type": "rival",
+      "generation": 4,
+      "wiki": "https://en.wikipedia.org/wiki/Arcesilaus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Head of the Academy (Plato's school)."
+        },
+        {
+          "title": "Contribution",
+          "content": "He pivoted the Academy to Skepticism. He argued that because Zeno's definition of 'truth' was impossible to meet, we can never know anything for certain."
+        },
+        {
+          "title": "Rivalry",
+          "content": "He spent his life attacking Zeno's dogmatism, forcing the Stoics to sharpen their logic."
+        }
+      ]
+    },
+    {
+      "id": "cleanthes",
+      "label": "Cleanthes",
+      "date": "330–230 BC",
+      "type": "stoic",
+      "generation": 5,
+      "wiki": "https://en.wikipedia.org/wiki/Cleanthes",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A former boxer who came to Athens with 4 drachmas. He worked at night watering gardens to pay for his studies. Known for his slowness but immense endurance."
+        },
+        {
+          "title": "Contribution",
+          "content": "2nd Head of the Stoa. He was deeply religious/pantheistic, writing the 'Hymn to Zeus'. He emphasized the physical tension (tonos) of the soul."
+        },
+        {
+          "title": "Legacy",
+          "content": "He held the school together during difficult times, though enrollment dropped due to his lack of debating skill."
+        }
+      ]
+    },
+    {
+      "id": "aristo",
+      "label": "Aristo",
+      "date": "c. 320 BC",
+      "type": "heterodox",
+      "generation": 5,
+      "wiki": "https://en.wikipedia.org/wiki/Aristo_of_Chios",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A charismatic speaker, called 'The Siren'."
+        },
+        {
+          "title": "Deviation",
+          "content": "He rejected Zeno's Logic and Physics as useless distractions. He argued we should only study Ethics. He also rejected 'preferred indifferents' (like health), arguing they were totally irrelevant."
+        },
+        {
+          "title": "Legacy",
+          "content": "His version of Stoicism was too close to Cynicism and eventually died out."
+        }
+      ]
+    },
+    {
+      "id": "herillus",
+      "label": "Herillus",
+      "date": "c. 250 BC",
+      "type": "heterodox",
+      "generation": 5,
+      "wiki": "https://en.wikipedia.org/wiki/Herillus_of_Carthage",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Student of Zeno."
+        },
+        {
+          "title": "Deviation",
+          "content": "He argued that Knowledge (episteme) was the sole end of life, differing from the orthodox view that Virtue (acting correctly) is the end."
+        },
+        {
+          "title": "Legacy",
+          "content": "His school was short-lived and branded heterodox."
+        }
+      ]
+    },
+    {
+      "id": "dionysius",
+      "label": "Dionysius",
+      "date": "c. 250 BC",
+      "type": "renegade",
+      "generation": 5,
+      "wiki": "https://en.wikipedia.org/wiki/Dionysius_the_Renegade",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Originally a committed Stoic student of Zeno."
+        },
+        {
+          "title": "The Turn",
+          "content": "He suffered from a terrible eye infection. The intense pain convinced him that the Stoic doctrine 'Pain is not an evil' was false. He defected to the Cyrenaics (Hedonists)."
+        },
+        {
+          "title": "Legacy",
+          "content": "Known forever as 'The Renegade' (Metathemenos)."
+        }
+      ]
+    },
+    {
+      "id": "persaeus",
+      "label": "Persaeus",
+      "date": "306–243 BC",
+      "type": "stoic",
+      "generation": 5,
+      "wiki": "https://en.wikipedia.org/wiki/Persaeus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Zeno's favorite student and housemate. Some sources say he was Zeno's slave, later manumitted."
+        },
+        {
+          "title": "Career",
+          "content": "He accepted an invitation to the court of King Antigonus II Gonatas (which Zeno refused). He became a general and died fighting for the King, proving Stoics could be men of action."
+        }
+      ]
+    },
+    {
+      "id": "chrysippus",
+      "label": "Chrysippus",
+      "date": "279–206 BC",
+      "type": "stoic",
+      "generation": 6,
+      "wiki": "https://en.wikipedia.org/wiki/Chrysippus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A long-distance runner from Soli. He wrote over 705 books, though none survive."
+        },
+        {
+          "title": "Contribution",
+          "content": "The 3rd Head. 'If there were no Chrysippus, there would be no Stoa.' He rescued the school from decline. He developed the complex system of propositional logic and reconciled Fate with Free Will (Compatibilism)."
+        },
+        {
+          "title": "Death",
+          "content": "Famously died of laughter after seeing a donkey eating figs and telling it to drink wine."
+        }
+      ]
+    },
+    {
+      "id": "sphaerus",
+      "label": "Sphaerus",
+      "date": "c. 250 BC",
+      "type": "stoic",
+      "generation": 6,
+      "wiki": "https://en.wikipedia.org/wiki/Sphaerus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Student of Zeno and Cleanthes."
+        },
+        {
+          "title": "Action",
+          "content": "He went to Sparta to advise King Cleomenes III on radical land reforms and the restoration of the ancient Spartan discipline (agoge). He is a prime example of a Stoic political advisor."
+        }
+      ]
+    },
+    {
+      "id": "zeno_tarsus",
+      "label": "Zeno of Tarsus",
+      "date": "fl. 200 BC",
+      "type": "stoic",
+      "generation": 7,
+      "wiki": "https://en.wikipedia.org/wiki/Zeno_of_Tarsus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Successor to Chrysippus as the 4th Head of the school."
+        },
+        {
+          "title": "Contribution",
+          "content": "Little is known of him, but he reportedly relaxed some of Chrysippus's rigid logical doctrines. He paved the way for the Middle Stoa's adaptability."
+        }
+      ]
+    },
+    {
+      "id": "diogenes_bab",
+      "label": "Diogenes (Babylon)",
+      "date": "230–150 BC",
+      "type": "stoic",
+      "generation": 8,
+      "wiki": "https://en.wikipedia.org/wiki/Diogenes_of_Babylon",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "5th Head of the Stoa."
+        },
+        {
+          "title": "Contribution",
+          "content": "In 155 BC, he was sent as an ambassador to Rome. His lectures introduced Stoicism to the Roman elite. He shocked conservative Romans by arguing (as a devil's advocate) that a merchant should not reveal defects in his wares, sparking a debate on justice."
+        }
+      ]
+    },
+    {
+      "id": "carneades",
+      "label": "Carneades",
+      "date": "214–129 BC",
+      "type": "rival",
+      "generation": 8,
+      "wiki": "https://en.wikipedia.org/wiki/Carneades",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Head of the Skeptic Academy."
+        },
+        {
+          "title": "Rivalry",
+          "content": "The most brilliant opponent Stoicism ever faced. He visited Rome with Diogenes and famously argued *for* Justice one day and *against* it the next, dazzling the youth and horrifying the Senate. He forced Stoics to retreat from claiming absolute certainty."
+        }
+      ]
+    },
+    {
+      "id": "antipater",
+      "label": "Antipater",
+      "date": "d. 130 BC",
+      "type": "stoic",
+      "generation": 9,
+      "wiki": "https://en.wikipedia.org/wiki/Antipater_of_Tarsus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "6th Head of the Stoa."
+        },
+        {
+          "title": "Contribution",
+          "content": "He shifted focus to practical ethics, writing on marriage and family. In response to Carneades' attacks, he wrote so many replies he was called the 'Pen-Squall'. He defended the idea that a wise man has a duty to protect his community."
+        }
+      ]
+    },
+    {
+      "id": "archedemus",
+      "label": "Archedemus",
+      "date": "fl. 140 BC",
+      "type": "stoic",
+      "generation": 9,
+      "wiki": "https://en.wikipedia.org/wiki/Archedemus_of_Tarsus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A student of Diogenes of Babylon."
+        },
+        {
+          "title": "Contribution",
+          "content": "He left Athens to establish a Stoic school in Babylon (modern Iraq), demonstrating the philosophy's spread to the East."
+        }
+      ]
+    },
+    {
+      "id": "panaetius",
+      "label": "Panaetius",
+      "date": "185–110 BC",
+      "type": "stoic",
+      "generation": 10,
+      "wiki": "https://en.wikipedia.org/wiki/Panaetius",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A Rhodian aristocrat. He became the friend and mentor of Scipio Aemilianus (conqueror of Carthage)."
+        },
+        {
+          "title": "Contribution",
+          "content": "Founder of the 'Middle Stoa'. He adapted Stoicism for the pragmatic Roman mind. He rejected the periodic destruction of the world (ekpyrosis) and focused on the active political life. His book 'On Duties' was the basis for Cicero's work."
+        }
+      ]
+    },
+    {
+      "id": "blossius",
+      "label": "Blossius",
+      "date": "fl. 133 BC",
+      "type": "stoic",
+      "generation": 10,
+      "wiki": "https://en.wikipedia.org/wiki/Blossius",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "From Cumae, Italy. Student of Antipater."
+        },
+        {
+          "title": "Action",
+          "content": "The radical side of Stoicism. He was the philosophical advisor to Tiberius Gracchus, the Roman populist who tried to redistribute land to the poor. When the revolution failed, Blossius committed suicide."
+        }
+      ]
+    },
+    {
+      "id": "posidonius",
+      "label": "Posidonius",
+      "date": "135–51 BC",
+      "type": "stoic",
+      "generation": 11,
+      "wiki": "https://en.wikipedia.org/wiki/Posidonius",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A Syrian Greek. He was a polymath—historian, astronomer, geographer, and philosopher."
+        },
+        {
+          "title": "Contribution",
+          "content": "He calculated the circumference of the earth. In ethics, he disagreed with Chrysippus, arguing that emotions (passions) have a separate, irrational power that must be tamed (like a horse), not just an error of judgment. Cicero visited him in Rhodes to learn."
+        }
+      ]
+    },
+    {
+      "id": "hecato",
+      "label": "Hecato",
+      "date": "c. 100 BC",
+      "type": "stoic",
+      "generation": 11,
+      "wiki": "https://en.wikipedia.org/wiki/Hecato_of_Rhodes",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Student of Panaetius."
+        },
+        {
+          "title": "Contribution",
+          "content": "Wrote detailed casuistry (case-law) on ethics. For example: 'If a ship is sinking, should a wise man save a valuable horse or a worthless slave?' (He said the horse, purely on economic value, highlighting the sometimes cold calculation of Middle Stoicism)."
+        }
+      ]
+    },
+    {
+      "id": "athenodorus",
+      "label": "Athenodorus",
+      "date": "74 BC – 7 AD",
+      "type": "stoic",
+      "generation": 12,
+      "wiki": "https://en.wikipedia.org/wiki/Athenodorus_Cananites",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Student of Posidonius. He moved to Rome and became the personal teacher and advisor to the first Emperor, Augustus."
+        },
+        {
+          "title": "Contribution",
+          "content": "He bridged the gap between the Greek school and Roman power. He famously told Augustus: 'Whenever you get angry, do not say or do anything before repeating to yourself the twenty-four letters of the alphabet.'"
+        },
+        {
+          "title": "Legacy",
+          "content": "He firmly established Stoicism as the court philosophy of the Roman Empire."
+        }
+      ]
+    },
+    {
+      "id": "arius",
+      "label": "Arius Didymus",
+      "date": "fl. 10 BC",
+      "type": "stoic",
+      "generation": 12,
+      "wiki": "https://en.wikipedia.org/wiki/Arius_Didymus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Court philosopher to Augustus and close friend."
+        },
+        {
+          "title": "Influence",
+          "content": "He famously advised Augustus to execute Caesarion (son of Cleopatra and Caesar), saying 'Too many Caesars is not good,' showing the harsh political realism of Roman Stoicism."
+        },
+        {
+          "title": "Work",
+          "content": "He collected summaries of Stoic and Peripatetic ethics which have preserved much of what we know about earlier doctrines."
+        }
+      ]
+    },
+    {
+      "id": "cicero",
+      "label": "Cicero",
+      "date": "106–43 BC",
+      "type": "sympathizer",
+      "generation": 12,
+      "wiki": "https://en.wikipedia.org/wiki/Cicero",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Rome's greatest orator and statesman."
+        },
+        {
+          "title": "Position",
+          "content": "He was an Academic Skeptic, not a Stoic. However, he heavily relied on Stoic ethics in his writings (De Officiis, Tusculan Disputations). He is our main source for much of lost Hellenistic Stoicism, though he often critiqued their rigid logic."
+        }
+      ]
+    },
+    {
+      "id": "cato",
+      "label": "Cato the Younger",
+      "date": "95–46 BC",
+      "type": "roman",
+      "generation": 12,
+      "wiki": "https://en.wikipedia.org/wiki/Cato_the_Younger",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Roman Senator. Great-grandson of Cato the Elder."
+        },
+        {
+          "title": "Life",
+          "content": "He was the living embodiment of Stoic rigidity. He opposed Julius Caesar's tyranny, refusing to bribe or compromise. He walked barefoot and bareheaded in rain or heat to train his resistance."
+        },
+        {
+          "title": "Death",
+          "content": "Committed suicide by ripping out his own intestines rather than submit to Caesar's pardon. He became the patron saint of Roman Stoics."
+        }
+      ]
+    },
+    {
+      "id": "attalus",
+      "label": "Attalus",
+      "date": "fl. 25 AD",
+      "type": "stoic",
+      "generation": 13,
+      "wiki": "https://en.wikipedia.org/wiki/Attalus_(Stoic)",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A Stoic philosopher in Rome during the reign of Tiberius."
+        },
+        {
+          "title": "Influence",
+          "content": "He was the teacher of Seneca the Younger. Seneca speaks of him with great reverence, recalling how Attalus inspired him to embrace voluntary poverty and a hard bed."
+        },
+        {
+          "title": "Legacy",
+          "content": "He is the direct link between the school and Seneca's writings."
+        }
+      ]
+    },
+    {
+      "id": "seneca",
+      "label": "Seneca",
+      "date": "4 BC – 65 AD",
+      "type": "roman",
+      "generation": 13,
+      "wiki": "https://en.wikipedia.org/wiki/Seneca_the_Younger",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Wealthiest man in Rome, playwright, and tutor/advisor to Emperor Nero."
+        },
+        {
+          "title": "Philosophy",
+          "content": "His 'Letters to Lucilius' are masterpieces of psychological insight. He struggled with the hypocrisy of his vast wealth vs. Stoic poverty. He taught that philosophy is a therapy for the soul."
+        },
+        {
+          "title": "Death",
+          "content": "Ordered to commit suicide by Nero. He opened his veins in a bath, dictating philosophy until the end."
+        }
+      ]
+    },
+    {
+      "id": "musonius",
+      "label": "Musonius Rufus",
+      "date": "30–100 AD",
+      "type": "roman",
+      "generation": 13,
+      "wiki": "https://en.wikipedia.org/wiki/Musonius_Rufus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "An Etruscan Knight. Known as the 'Roman Socrates'."
+        },
+        {
+          "title": "Contribution",
+          "content": "He was a teacher, not a writer. He famously argued that women have the same capacity for virtue as men and should be educated in philosophy. He was exiled multiple times for his truth-telling."
+        }
+      ]
+    },
+    {
+      "id": "epictetus",
+      "label": "Epictetus",
+      "date": "50–135 AD",
+      "type": "roman",
+      "generation": 14,
+      "wiki": "https://en.wikipedia.org/wiki/Epictetus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Born a slave in Hierapolis. His name literally means 'Acquired'. His leg was deliberately broken by his master, leaving him crippled."
+        },
+        {
+          "title": "Philosophy",
+          "content": "After gaining freedom, he taught that we must distinguish between what is in our control (our judgments) and what is not (body, wealth, reputation). He wrote nothing; his student Arrian recorded his 'Discourses'."
+        },
+        {
+          "title": "Legacy",
+          "content": "The master of spiritual resilience."
+        }
+      ]
+    },
+    {
+      "id": "hierocles",
+      "label": "Hierocles",
+      "date": "fl. 150 AD",
+      "type": "stoic",
+      "generation": 14,
+      "wiki": "https://en.wikipedia.org/wiki/Hierocles_(Stoic)",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "A contemporary of Epictetus."
+        },
+        {
+          "title": "Contribution",
+          "content": "Famous for the 'Circles of Concern' (Oikeiosis). He argued we are surrounded by concentric circles (self, family, city, world) and our duty is to draw people from the outer circles closer to the center, treating strangers like cousins."
+        }
+      ]
+    },
+    {
+      "id": "rusticus",
+      "label": "Junius Rusticus",
+      "date": "100–170 AD",
+      "type": "roman",
+      "generation": 15,
+      "wiki": "https://en.wikipedia.org/wiki/Quintus_Junius_Rusticus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Roman politician and Consul."
+        },
+        {
+          "title": "Role",
+          "content": "He was the main philosophy tutor of Marcus Aurelius. He loaned Marcus his personal copy of Epictetus's Discourses, which changed the Emperor's life."
+        },
+        {
+          "title": "Legacy",
+          "content": "Marcus thanks him in Book 1 for teaching him to avoid rhetoric and write simply."
+        }
+      ]
+    },
+    {
+      "id": "fronto",
+      "label": "Fronto",
+      "date": "100–166 AD",
+      "type": "sympathizer",
+      "generation": 15,
+      "wiki": "https://en.wikipedia.org/wiki/Marcus_Cornelius_Fronto",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "The leading Roman rhetorician and Marcus's tutor in Latin literature."
+        },
+        {
+          "title": "Conflict",
+          "content": "Their surviving letters show a tug-of-war for Marcus's soul. Fronto wanted him to be a great orator; Marcus slowly abandoned rhetoric for the 'harder' path of Stoic philosophy, much to Fronto's dismay."
+        }
+      ]
+    },
+    {
+      "id": "maximus",
+      "label": "Claudius Maximus",
+      "date": "fl. 150 AD",
+      "type": "roman",
+      "generation": 15,
+      "wiki": "https://en.wikipedia.org/wiki/Claudius_Maximus",
+      "sections": [
+        {
+          "title": "Role",
+          "content": "A Stoic philosopher and Roman Senator who taught Marcus."
+        },
+        {
+          "title": "Influence",
+          "content": "In Meditations 1.15, Marcus praises him for his self-control, truthfulness, and the fact that everyone believed 'he meant what he said.' He taught Marcus how to command without being angry."
+        }
+      ]
+    },
+    {
+      "id": "marcus",
+      "label": "Marcus Aurelius",
+      "date": "121–180 AD",
+      "type": "roman",
+      "generation": 16,
+      "wiki": "https://en.wikipedia.org/wiki/Marcus_Aurelius",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "The Emperor of Rome. He ruled during a period of endless wars and plagues."
+        },
+        {
+          "title": "Work",
+          "content": "Wrote 'Meditations' (To Himself) while on military campaigns against Germanic tribes. It was a private diary of spiritual exercises, never meant for publication."
+        },
+        {
+          "title": "Philosophy",
+          "content": "His focus was on duty to the 'Cosmopolis' (World City) and accepting Fate. He frequently reminded himself that fame is fleeting and that the only good is a virtuous character."
+        }
+      ]
+    },
+    {
+      "id": "galen",
+      "label": "Galen",
+      "date": "129–216 AD",
+      "type": "sympathizer",
+      "generation": 16,
+      "wiki": "https://en.wikipedia.org/wiki/Galen",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "The most famous physician of antiquity."
+        },
+        {
+          "title": "Role",
+          "content": "He was the personal physician to Marcus Aurelius. He witnessed the Emperor's physical frailty and stomach issues (which Marcus famously endured without complaint). Galen called Marcus 'The Philosopher' and noted his incredible work ethic despite his health."
+        }
+      ]
+    },
+    {
+      "id": "commodus",
+      "label": "Commodus",
+      "date": "161–192 AD",
+      "type": "renegade",
+      "generation": 17,
+      "wiki": "https://en.wikipedia.org/wiki/Commodus",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Son of Marcus Aurelius."
+        },
+        {
+          "title": "The Failure",
+          "content": "Despite having the most virtuous father in history, Commodus was a cruel megalomaniac who enjoyed fighting as a gladiator. His reign ended the Pax Romana."
+        },
+        {
+          "title": "Legacy",
+          "content": "A stark reminder of the Stoic teaching that virtue cannot be inherited; it must be chosen by each individual."
+        }
+      ]
+    },
+    {
+      "id": "lipsius",
+      "label": "Justus Lipsius",
+      "date": "1547–1606",
+      "type": "revival",
+      "generation": 18,
+      "wiki": "https://en.wikipedia.org/wiki/Justus_Lipsius",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Flemish humanist during the violent religious wars of the Reformation."
+        },
+        {
+          "title": "Contribution",
+          "content": "The father of Neostoicism. He wrote 'De Constantia', arguing that Stoic endurance was compatible with Christian theology. He sanitized Stoicism of its materialism (fire-physics) to make it acceptable to the Church."
+        }
+      ]
+    },
+    {
+      "id": "spinoza",
+      "label": "Spinoza",
+      "date": "1632–1677",
+      "type": "modern",
+      "generation": 19,
+      "wiki": "https://en.wikipedia.org/wiki/Baruch_Spinoza",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Dutch Jewish philosopher, excommunicated for heresy."
+        },
+        {
+          "title": "Philosophy",
+          "content": "Though not a self-proclaimed Stoic, his 'Ethics' is deeply Stoic. He argued God is Nature ('Deus sive Natura'). He believed freedom comes from understanding the necessity of events and mastering the passions through reason."
+        }
+      ]
+    },
+    {
+      "id": "kant",
+      "label": "Kant",
+      "date": "1724–1804",
+      "type": "modern",
+      "generation": 19,
+      "wiki": "https://en.wikipedia.org/wiki/Immanuel_Kant",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "German Enlightenment philosopher."
+        },
+        {
+          "title": "Relation",
+          "content": "His Deontology (Duty-based ethics) mirrors Stoicism. He argued that the moral worth of an action lies in the *intention* (Good Will), not the outcome, which aligns with the Stoic view that virtue is the only good."
+        }
+      ]
+    },
+    {
+      "id": "nietzsche",
+      "label": "Nietzsche",
+      "date": "1844–1900",
+      "type": "rival",
+      "generation": 19,
+      "wiki": "https://en.wikipedia.org/wiki/Friedrich_Nietzsche",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "German Existentialist."
+        },
+        {
+          "title": "Critique",
+          "content": "He admired Stoic self-discipline but attacked their premise. He argued Stoics try to tyranny Nature by imposing their own morality on it. 'You want to live 'according to Nature'? Oh, you noble Stoics, what fraud of words!' He preferred embracing chaos (Amor Fati in a wilder sense)."
+        }
+      ]
+    },
+    {
+      "id": "cbt",
+      "label": "CBT (Beck)",
+      "date": "1960s",
+      "type": "modern",
+      "generation": 20,
+      "wiki": "https://en.wikipedia.org/wiki/Cognitive_behavioral_therapy",
+      "sections": [
+        {
+          "title": "Background",
+          "content": "Aaron Beck and Albert Ellis (REBT)."
+        },
+        {
+          "title": "Connection",
+          "content": "Cognitive Behavioral Therapy is the direct clinical application of Stoicism. It is based on Epictetus's maxim: 'Men are not disturbed by things, but by the view they take of them.' It focuses on identifying and correcting distorted judgments."
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "socrates",
+      "target": "plato"
+    },
+    {
+      "source": "socrates",
+      "target": "antisthenes"
+    },
+    {
+      "source": "socrates",
+      "target": "xenophon"
+    },
+    {
+      "source": "plato",
+      "target": "aristotle",
+      "type": "rival"
+    },
+    {
+      "source": "plato",
+      "target": "polemo"
+    },
+    {
+      "source": "antisthenes",
+      "target": "diogenes"
+    },
+    {
+      "source": "diogenes",
+      "target": "crates"
+    },
+    {
+      "source": "stilpo",
+      "target": "zeno",
+      "label": "logic",
+      "type": "influence"
+    },
+    {
+      "source": "crates",
+      "target": "zeno",
+      "label": "ethics"
+    },
+    {
+      "source": "polemo",
+      "target": "zeno",
+      "label": "nature",
+      "type": "influence"
+    },
+    {
+      "source": "zeno",
+      "target": "cleanthes"
+    },
+    {
+      "source": "zeno",
+      "target": "aristo"
+    },
+    {
+      "source": "zeno",
+      "target": "herillus"
+    },
+    {
+      "source": "zeno",
+      "target": "dionysius"
+    },
+    {
+      "source": "zeno",
+      "target": "persaeus"
+    },
+    {
+      "source": "zeno",
+      "target": "sphaerus"
+    },
+    {
+      "source": "zeno",
+      "target": "epicurus",
+      "type": "rival"
+    },
+    {
+      "source": "zeno",
+      "target": "arcesilaus",
+      "type": "rival"
+    },
+    {
+      "source": "cleanthes",
+      "target": "chrysippus"
+    },
+    {
+      "source": "chrysippus",
+      "target": "zeno_tarsus"
+    },
+    {
+      "source": "zeno_tarsus",
+      "target": "diogenes_bab"
+    },
+    {
+      "source": "diogenes_bab",
+      "target": "antipater"
+    },
+    {
+      "source": "diogenes_bab",
+      "target": "archedemus"
+    },
+    {
+      "source": "diogenes_bab",
+      "target": "carneades",
+      "type": "rival"
+    },
+    {
+      "source": "antipater",
+      "target": "panaetius"
+    },
+    {
+      "source": "antipater",
+      "target": "blossius"
+    },
+    {
+      "source": "panaetius",
+      "target": "posidonius"
+    },
+    {
+      "source": "panaetius",
+      "target": "hecato"
+    },
+    {
+      "source": "posidonius",
+      "target": "athenodorus"
+    },
+    {
+      "source": "posidonius",
+      "target": "cicero",
+      "type": "influence"
+    },
+    {
+      "source": "antipater",
+      "target": "cato",
+      "type": "influence"
+    },
+    {
+      "source": "cato",
+      "target": "seneca",
+      "type": "influence"
+    },
+    {
+      "source": "athenodorus",
+      "target": "arius"
+    },
+    {
+      "source": "athenodorus",
+      "target": "seneca",
+      "type": "influence"
+    },
+    {
+      "source": "attalus",
+      "target": "seneca"
+    },
+    {
+      "source": "musonius",
+      "target": "epictetus"
+    },
+    {
+      "source": "musonius",
+      "target": "hierocles"
+    },
+    {
+      "source": "epictetus",
+      "target": "rusticus",
+      "type": "influence"
+    },
+    {
+      "source": "rusticus",
+      "target": "marcus"
+    },
+    {
+      "source": "fronto",
+      "target": "marcus"
+    },
+    {
+      "source": "maximus",
+      "target": "marcus"
+    },
+    {
+      "source": "galen",
+      "target": "marcus",
+      "type": "influence"
+    },
+    {
+      "source": "marcus",
+      "target": "commodus"
+    },
+    {
+      "source": "zeno",
+      "target": "marcus",
+      "type": "influence"
+    },
+    {
+      "source": "chrysippus",
+      "target": "epictetus",
+      "type": "influence"
+    },
+    {
+      "source": "seneca",
+      "target": "lipsius",
+      "type": "influence"
+    },
+    {
+      "source": "epictetus",
+      "target": "lipsius",
+      "type": "influence"
+    },
+    {
+      "source": "lipsius",
+      "target": "spinoza",
+      "type": "influence"
+    },
+    {
+      "source": "lipsius",
+      "target": "kant",
+      "type": "influence"
+    },
+    {
+      "source": "marcus",
+      "target": "cbt",
+      "type": "influence"
+    },
+    {
+      "source": "epictetus",
+      "target": "cbt",
+      "type": "influence"
+    },
+    {
+      "source": "spinoza",
+      "target": "nietzsche",
+      "type": "rival"
+    }
+  ]
+}

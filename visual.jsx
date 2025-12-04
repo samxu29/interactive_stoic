@@ -1,0 +1,432 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, ZoomIn, ZoomOut, BookOpen, X, Sword, ExternalLink, Anchor, MousePointer2 } from 'lucide-react';
+import DB from './database.json';
+
+const { nodes: INITIAL_NODES, edges: INITIAL_EDGES } = DB;
+import { useForceLayout } from './layout';
+
+export default function InteractiveStoic() {
+  const containerRef = useRef(null);
+  const [dimensions, setDimensions] = useState({ w: 0, h: 0 });
+  const [nodes, setNodes] = useForceLayout(INITIAL_NODES, INITIAL_EDGES, dimensions.w, dimensions.h);
+  const [selectedNode, setSelectedNode] = useState(null);
+  const [hoveredNode, setHoveredNode] = useState(null); // NEW STATE FOR HOVER
+  const [draggingId, setDraggingId] = useState(null);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [viewState, setViewState] = useState({ scale: 0.6, x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if(containerRef.current) {
+        const w = containerRef.current.offsetWidth;
+        const h = containerRef.current.offsetHeight;
+        setDimensions({ w, h });
+        // Center the view initially
+        setViewState({ scale: 0.6, x: w/2 - 600, y: 0 });
+    }
+  }, []);
+
+  const focusOnNode = (node) => {
+      setSelectedNode(node);
+      
+      // 1. Find all connected nodes (neighbors)
+      const connectedNodeIds = new Set();
+      connectedNodeIds.add(node.id); // Include self
+      
+      INITIAL_EDGES.forEach(edge => {
+          if (edge.source === node.id) connectedNodeIds.add(edge.target);
+          if (edge.target === node.id) connectedNodeIds.add(edge.source);
+      });
+      
+      // 2. Calculate Bounding Box of this cluster
+      let minX = node.x, maxX = node.x;
+      let minY = node.y, maxY = node.y;
+      
+      nodes.forEach(n => {
+          if (connectedNodeIds.has(n.id)) {
+              minX = Math.min(minX, n.x);
+              maxX = Math.max(maxX, n.x);
+              minY = Math.min(minY, n.y);
+              maxY = Math.max(maxY, n.y);
+          }
+      });
+      
+      // Add some padding to the box
+      const PADDING = 150;
+      const boxW = (maxX - minX) + PADDING * 2;
+      const boxH = (maxY - minY) + PADDING * 2;
+      const boxCenterX = (minX + maxX) / 2;
+      const boxCenterY = (minY + maxY) / 2;
+
+      // 3. Calculate Scale to fit
+      // Available view area (subtracting sidebar)
+      const panelWidth = 384; 
+      const availableW = dimensions.w - panelWidth;
+      const availableH = dimensions.h;
+      
+      // Scale fitting both width and height, capped at 1.2 for close-ups and 0.2 for large groups
+      let targetScale = Math.min(availableW / boxW, availableH / boxH);
+      targetScale = Math.min(Math.max(targetScale, 0.2), 1.2); 
+
+      // 4. Center the view on the Box Center
+      // Logic: ScreenCenter = (WorldCenter + Pan) * Scale
+      // Pan = (ScreenCenter / Scale) - WorldCenter
+      
+      // Target screen center is the middle of the available space
+      const screenCenterX = availableW / 2;
+      const screenCenterY = availableH / 2;
+
+      setViewState({ 
+          scale: targetScale, 
+          x: (screenCenterX / targetScale) - boxCenterX, 
+          y: (screenCenterY / targetScale) - boxCenterY 
+      });
+  };
+
+  const handleNodeMouseDown = (e, id, x, y) => {
+    e.stopPropagation();
+    setDraggingId(id);
+    setOffset({ x: e.clientX / viewState.scale - x, y: e.clientY / viewState.scale - y });
+  };
+
+  const handleMouseMove = (e) => {
+    if (draggingId) {
+       const newX = e.clientX / viewState.scale - offset.x;
+       const newY = e.clientY / viewState.scale - offset.y;
+       setNodes(prev => prev.map(n => n.id === draggingId ? { ...n, x: newX, y: newY } : n));
+    } else if (isPanning) {
+       const dx = e.clientX - panStart.x;
+       const dy = e.clientY - panStart.y;
+       setViewState(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
+       setPanStart({ x: e.clientX, y: e.clientY });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDraggingId(null);
+    setIsPanning(false);
+  };
+
+  const handleCanvasMouseDown = (e) => {
+    setIsPanning(true);
+    setPanStart({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const query = e.target.search.value.toLowerCase();
+    if (!query) return;
+    
+    // Check if nodes are loaded
+    if (!nodes || nodes.length === 0) return;
+
+    const found = nodes.find(n => n.label.toLowerCase().includes(query));
+    if (found) {
+        focusOnNode(found);
+    }
+  };
+
+  const getNodeColor = (type) => {
+    switch(type) {
+        case 'root': return 'bg-gray-200 border-gray-400 text-slate-900';
+        case 'cynic': return 'bg-stone-200 border-stone-400 text-slate-900';
+        case 'academy': return 'bg-yellow-50 border-yellow-300 text-slate-900';
+        case 'stoic': return 'bg-blue-100 border-blue-400 text-slate-900';
+        case 'rival': return 'bg-red-50 border-red-300 border-dashed text-slate-900';
+        case 'roman': return 'bg-purple-100 border-purple-400 text-slate-900';
+        case 'modern': return 'bg-emerald-100 border-emerald-400 text-slate-900';
+        case 'renegade': return 'bg-gray-700 border-gray-900 text-white';
+        default: return 'bg-white border-gray-300 text-slate-900';
+    }
+  };
+
+  const getCurvePath = (x1, y1, x2, y2) => {
+      const midY = (y1 + y2) / 2;
+      return `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+  };
+
+  // NEW: Handler for clicking edges
+  const handleEdgeClick = (edge) => {
+      if (!selectedNode) return;
+      
+      // Navigate to the node on the *other* side of the connection
+      const nextNodeId = selectedNode.id === edge.source ? edge.target : edge.source;
+      const nextNode = nodes.find(n => n.id === nextNodeId);
+      
+      if (nextNode) {
+          focusOnNode(nextNode);
+      }
+  };
+
+  const handleWheel = (e) => {
+    // e.preventDefault(); // React synthetic events don't strictly require this for wheel usually, but good practice if attached natively
+    
+    const scaleSensitivity = 0.001;
+    const delta = -e.deltaY * scaleSensitivity;
+    
+    // Limit zoom range
+    const newScale = Math.min(Math.max(0.1, viewState.scale + delta), 4);
+    
+    // Calculate cursor position relative to the container
+    const rect = containerRef.current.getBoundingClientRect();
+    const cursorX = e.clientX - rect.left;
+    const cursorY = e.clientY - rect.top;
+
+    // Calculate world coordinates of the cursor (before zoom)
+    const worldX = (cursorX - viewState.x) / viewState.scale;
+    const worldY = (cursorY - viewState.y) / viewState.scale;
+
+    // Calculate new pan to keep world coordinates under cursor
+    const newX = cursorX - (worldX * newScale);
+    const newY = cursorY - (worldY * newScale);
+
+    setViewState({
+        scale: newScale,
+        x: newX,
+        y: newY
+    });
+  };
+
+  return (
+    <div className="h-screen w-full flex flex-col bg-slate-50 overflow-hidden font-sans text-slate-900"
+         onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+        
+        {/* Toolbar */}
+        <div className="bg-white border-b px-4 py-3 flex justify-between items-center shadow-sm z-20">
+            <div className="flex items-center gap-3">
+                <div className="bg-blue-600 text-white p-2 rounded">
+                    <BookOpen size={20} />
+                </div>
+                <div>
+                    <h1 className="font-serif font-bold text-lg">interactive_stoic</h1>
+                    <p className="text-xs text-slate-500">Drag to rearrange • Scroll to zoom • Click highlighted lines to jump</p>
+                </div>
+            </div>
+            <div className="flex gap-2">
+                <form onSubmit={handleSearch}>
+                    <input name="search" placeholder="Search..." className="bg-slate-100 px-3 py-1 rounded-full text-sm border focus:border-blue-500 outline-none" />
+                </form>
+                <div className="flex bg-slate-100 rounded">
+                    <button onClick={() => setViewState(p => ({...p, scale: p.scale - 0.1}))} className="p-2 hover:bg-white"><ZoomOut size={16}/></button>
+                    <button onClick={() => setViewState(p => ({...p, scale: p.scale + 0.1}))} className="p-2 hover:bg-white"><ZoomIn size={16}/></button>
+                </div>
+            </div>
+        </div>
+
+        {/* Graph Canvas */}
+        <div className="flex-1 relative cursor-grab active:cursor-grabbing bg-dot-pattern"
+             ref={containerRef}
+             onMouseDown={handleCanvasMouseDown}
+             onWheel={handleWheel}
+        >
+            <div style={{ 
+                transform: `translate(${viewState.x}px, ${viewState.y}px) scale(${viewState.scale})`,
+                transformOrigin: '0 0',
+                width: '100%', height: '100%',
+                cursor: selectedNode ? 'default' : 'grab' // Indicate mode
+            }}>
+                <svg className="absolute top-0 left-0 overflow-visible pointer-events-none w-full h-full">
+                    {/* Draw Edges as Bezier Curves */}
+                    {INITIAL_EDGES.map((edge, i) => {
+                        // Check if nodes are ready
+                        if (!nodes || nodes.length === 0) return null;
+
+                        const source = nodes.find(n => n.id === edge.source);
+                        const target = nodes.find(n => n.id === edge.target);
+                        if (!source || !target) return null;
+                        
+                        const isRival = edge.type === 'rival';
+                        const isInfluence = edge.type === 'influence'; // Dashed
+                        const isDotted = edge.type === 'dotted'; // Legacy
+                        const isDashed = isRival || isInfluence || isDotted;
+                        
+                        // NEW LOGIC: Visibility based on SELECTION primarily
+                        const isConnectedToSelected = selectedNode && (selectedNode.id === source.id || selectedNode.id === target.id);
+                        const isConnectedToHovered = hoveredNode && (hoveredNode.id === source.id || hoveredNode.id === target.id);
+                        
+                        // "Active" means highlighted. "Clickable" means connected to the currently READ card.
+                        const isHighlighted = isConnectedToSelected || isConnectedToHovered;
+                        const isClickable = isConnectedToSelected;
+                        
+                        // Dim everything else if there is a focus
+                        const isGlobalDim = (selectedNode || hoveredNode) && !isHighlighted;
+                        
+                        // Colors
+                        let strokeColor = isRival ? '#fca5a5' : '#cbd5e1';
+                        if (isHighlighted) {
+                            strokeColor = isRival ? '#ef4444' : '#3b82f6';
+                        }
+
+                        // Opacity - clearer faint lines
+                        const opacity = isGlobalDim ? 0.6 : (isHighlighted ? 1 : 0.6); 
+                        const width = isHighlighted ? 3 : (isRival ? 1.5 : 2);
+                        
+                        let x1, y1, x2, y2;
+                        const isSameGen = source.generation === target.generation;
+                        
+                        if (isRival && isSameGen) {
+                            // Side to Side for contemporaries
+                            if (source.x < target.x) {
+                                x1 = source.x + 70; // Right of source
+                                x2 = target.x - 70; // Left of target
+                            } else {
+                                x1 = source.x - 70; // Left of source
+                                x2 = target.x + 70; // Right of target
+                            }
+                            y1 = source.y;
+                            y2 = target.y;
+                        } else {
+                            // Top to Bottom (Default)
+                            x1 = source.x;
+                            y1 = source.y + 25;
+                            x2 = target.x;
+                            y2 = target.y - 25;
+                        }
+                        
+                        const pathD = getCurvePath(x1, y1, x2, y2);
+
+                        return (
+                            <g key={i} 
+                               style={{ opacity, transition: 'opacity 0.2s', pointerEvents: isClickable ? 'all' : 'none' }} 
+                               onClick={(e) => {
+                                   e.stopPropagation();
+                                   if (isClickable) handleEdgeClick(edge);
+                               }}
+                               className={isClickable ? "cursor-pointer group" : ""}
+                            >
+                                {/* Invisible wide path for easier clicking */}
+                                <path 
+                                    d={pathD}
+                                    fill="none"
+                                    stroke="transparent"
+                                    strokeWidth={20}
+                                />
+                                {/* Visible path */}
+                                <path 
+                                    d={pathD}
+                                    fill="none"
+                                    stroke={strokeColor}
+                                    strokeWidth={width}
+                                    strokeDasharray={isDashed ? "5,5" : "none"}
+                                    className="transition-all duration-200 group-hover:stroke-[4px]"
+                                />
+                                {edge.label && isHighlighted && (
+                                    <text x={(source.x + target.x)/2} y={(source.y + target.y)/2}
+                                        fill="#1e293b" fontSize="12" fontWeight="bold" textAnchor="middle" 
+                                        className="bg-white/90 px-1 py-0.5 rounded border border-gray-200">
+                                        {edge.label}
+                                    </text>
+                                )}
+                            </g>
+                        );
+                    })}
+                </svg>
+
+                {/* Draw Nodes */}
+                {nodes && nodes.map(node => (
+                    <div
+                        key={node.id}
+                        onMouseDown={(e) => handleNodeMouseDown(e, node.id, node.x, node.y)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            focusOnNode(node);
+                        }}
+                        onMouseEnter={() => setHoveredNode(node)}
+                        onMouseLeave={() => setHoveredNode(null)}
+                        className={`absolute flex flex-col items-center justify-center p-2 rounded-lg shadow-md border-2 transition-all hover:shadow-xl cursor-pointer select-none
+                            ${getNodeColor(node.type)}
+                            ${selectedNode?.id === node.id ? 'ring-4 ring-offset-2 ring-blue-500 scale-110 z-50' : 'z-10'}
+                            ${hoveredNode && hoveredNode.id !== node.id && selectedNode?.id !== node.id ? 'opacity-40 grayscale' : 'opacity-100'} 
+                        `}
+                        style={{
+                            left: node.x, top: node.y, width: 140, height: 60,
+                            transform: 'translate(-50%, -50%)',
+                            transition: 'opacity 0.2s, filter 0.2s, transform 0.2s'
+                        }}
+                    >
+                        <div className="flex items-center gap-1">
+                            {node.type === 'rival' && <Sword size={12} className="text-red-500"/>}
+                            <span className="font-bold text-xs text-center leading-tight">{node.label}</span>
+                        </div>
+                        <span className={`text-[10px] mt-1 ${node.type === 'renegade' ? 'text-gray-300' : 'text-gray-500'}`}>
+                            {node.date}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        {/* Legend */}
+        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs pointer-events-none z-30">
+            <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-gray-200"></div> Socratic</div>
+                <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-stone-200"></div> Cynic</div>
+                <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-blue-100"></div> Stoic</div>
+                <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-red-100 border border-red-300 border-dashed"></div> Rival</div>
+                <div className="flex items-center gap-2"><div className="w-8 h-0 border-b-2 border-slate-300"></div> Student</div>
+                <div className="flex items-center gap-2"><div className="w-8 h-0 border-b-2 border-slate-300 border-dashed"></div> Influence</div>
+            </div>
+        </div>
+
+        {/* Info Panel */}
+        {selectedNode && (
+            <div className="absolute right-0 top-14 bottom-0 w-96 bg-white shadow-2xl border-l p-6 z-40 overflow-y-auto transform transition-transform">
+                <div className="flex justify-between items-start mb-4">
+                    <h2 className="text-xl font-serif font-bold">{selectedNode.label}</h2>
+                    <button onClick={() => setSelectedNode(null)} className="hover:bg-gray-100 p-1 rounded-full"><X size={20}/></button>
+                </div>
+                <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                        <span className="inline-block px-2 py-1 text-xs font-semibold bg-gray-100 rounded uppercase tracking-wide">
+                            {selectedNode.type}
+                        </span>
+                        <span className="text-sm text-gray-500 font-mono">{selectedNode.date}</span>
+                    </div>
+                    
+                    {selectedNode.wiki && (
+                        <a 
+                            href={selectedNode.wiki} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 text-xs text-blue-600 hover:underline mb-4"
+                        >
+                            <ExternalLink size={12} />
+                            Read on Wikipedia
+                        </a>
+                    )}
+
+                    <hr className="border-gray-100"/>
+                    
+                    {/* Render Structured Sections */}
+                    {selectedNode.sections && selectedNode.sections.map((section, idx) => (
+                        <div key={idx} className="mb-4">
+                            <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider mb-1">
+                                {section.title}
+                            </h3>
+                            <p className="text-gray-600 text-sm leading-relaxed">
+                                {section.content}
+                            </p>
+                        </div>
+                    ))}
+                    
+                    {/* Fallback for legacy desc string if any */}
+                    {selectedNode.desc && !selectedNode.sections && (
+                         <div className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">
+                            {selectedNode.desc}
+                        </div>
+                    )}
+                </div>
+            </div>
+        )}
+
+        <style>{`
+            .bg-dot-pattern {
+                background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+        `}</style>
+    </div>
+  );
+}
