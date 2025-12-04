@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, ZoomIn, ZoomOut, BookOpen, X, Sword, ExternalLink, Anchor, MousePointer2 } from 'lucide-react';
 import DB from './database.json';
+import { useForceLayout } from './layout';
 
 const { nodes: INITIAL_NODES, edges: INITIAL_EDGES } = DB;
-import { useForceLayout } from './layout';
 
 export default function InteractiveStoic() {
   const containerRef = useRef(null);
   const [dimensions, setDimensions] = useState({ w: 0, h: 0 });
   const [nodes, setNodes] = useForceLayout(INITIAL_NODES, INITIAL_EDGES, dimensions.w, dimensions.h);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [nodeImage, setNodeImage] = useState(null); // High-res for detail view
+  const [nodeThumbnails, setNodeThumbnails] = useState({}); // Low-res for graph
   const [hoveredNode, setHoveredNode] = useState(null); // NEW STATE FOR HOVER
   const [draggingId, setDraggingId] = useState(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -26,6 +28,62 @@ export default function InteractiveStoic() {
         setViewState({ scale: 0.6, x: w/2 - 600, y: 0 });
     }
   }, []);
+
+  // Fetch thumbnails for graph nodes
+  useEffect(() => {
+    const nodesWithWiki = INITIAL_NODES.filter(n => n.wiki);
+    if (nodesWithWiki.length === 0) return;
+
+    // Chunk requests if necessary (max 50 titles per request)
+    const titles = nodesWithWiki.map(n => n.wiki.split('/').pop());
+    const uniqueTitles = [...new Set(titles)]; // Dedup just in case
+    
+    // Simple implementation assuming < 50 nodes with wiki
+    const titleString = uniqueTitles.join('|');
+
+    fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${titleString}&prop=pageimages&format=json&pithumbsize=100&origin=*`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.query || !data.query.pages) return;
+        
+        const newThumbnails = {};
+        Object.values(data.query.pages).forEach(page => {
+           if (page.thumbnail) {
+               // Find the matching node
+               // API returns titles with spaces, our DB has underscores
+               const match = nodesWithWiki.find(n => {
+                   const dbTitle = decodeURIComponent(n.wiki.split('/').pop()).replace(/_/g, ' ');
+                   return dbTitle === page.title;
+               });
+               
+               if (match) {
+                   newThumbnails[match.id] = page.thumbnail.source;
+               }
+           }
+        });
+        setNodeThumbnails(newThumbnails);
+      })
+      .catch(err => console.error("Failed to fetch thumbnails", err));
+  }, []);
+
+  useEffect(() => {
+    if (selectedNode && selectedNode.wiki) {
+      setNodeImage(null);
+      const title = selectedNode.wiki.split('/').pop();
+      fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${title}&prop=pageimages&format=json&pithumbsize=500&origin=*`)
+        .then(res => res.json())
+        .then(data => {
+          const pages = data.query.pages;
+          const pageId = Object.keys(pages)[0];
+          if (pages[pageId].thumbnail) {
+            setNodeImage(pages[pageId].thumbnail.source);
+          }
+        })
+        .catch(err => console.error("Failed to fetch image", err));
+    } else {
+      setNodeImage(null);
+    }
+  }, [selectedNode]);
 
   const focusOnNode = (node) => {
       setSelectedNode(node);
@@ -340,18 +398,34 @@ export default function InteractiveStoic() {
                             ${hoveredNode && hoveredNode.id !== node.id && selectedNode?.id !== node.id ? 'opacity-40 grayscale' : 'opacity-100'} 
                         `}
                         style={{
-                            left: node.x, top: node.y, width: 140, height: 60,
+                            left: node.x, top: node.y, width: 160, height: 70,
                             transform: 'translate(-50%, -50%)',
                             transition: 'opacity 0.2s, filter 0.2s, transform 0.2s'
                         }}
                     >
-                        <div className="flex items-center gap-1">
-                            {node.type === 'rival' && <Sword size={12} className="text-red-500"/>}
-                            <span className="font-bold text-xs text-center leading-tight">{node.label}</span>
+                        <div className="flex items-center gap-2 w-full">
+                            {nodeThumbnails[node.id] ? (
+                                <img 
+                                    src={nodeThumbnails[node.id]} 
+                                    alt="" 
+                                    className="w-10 h-10 rounded-full object-cover border border-gray-300 shrink-0 bg-gray-100"
+                                />
+                            ) : (
+                                <div className="w-10 h-10 rounded-full bg-gray-100 border border-gray-300 flex items-center justify-center shrink-0">
+                                    <span className="text-xs text-gray-400 font-serif">{node.label[0]}</span>
+                                </div>
+                            )}
+                            
+                            <div className="flex flex-col min-w-0">
+                                <div className="flex items-center gap-1">
+                                    {node.type === 'rival' && <Sword size={12} className="text-red-500 shrink-0"/>}
+                                    <span className="font-bold text-xs leading-tight truncate">{node.label}</span>
+                                </div>
+                                <span className={`text-[10px] ${node.type === 'renegade' ? 'text-gray-300' : 'text-gray-500'} truncate`}>
+                                    {node.date}
+                                </span>
+                            </div>
                         </div>
-                        <span className={`text-[10px] mt-1 ${node.type === 'renegade' ? 'text-gray-300' : 'text-gray-500'}`}>
-                            {node.date}
-                        </span>
                     </div>
                 ))}
             </div>
@@ -372,51 +446,68 @@ export default function InteractiveStoic() {
 
         {/* Info Panel */}
         {selectedNode && (
-            <div className="absolute right-0 top-14 bottom-0 w-96 bg-white shadow-2xl border-l p-6 z-40 overflow-y-auto transform transition-transform">
-                <div className="flex justify-between items-start mb-4">
-                    <h2 className="text-xl font-serif font-bold">{selectedNode.label}</h2>
-                    <button onClick={() => setSelectedNode(null)} className="hover:bg-gray-100 p-1 rounded-full"><X size={20}/></button>
-                </div>
-                <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                        <span className="inline-block px-2 py-1 text-xs font-semibold bg-gray-100 rounded uppercase tracking-wide">
-                            {selectedNode.type}
-                        </span>
-                        <span className="text-sm text-gray-500 font-mono">{selectedNode.date}</span>
+            <div className="absolute right-0 top-14 bottom-0 w-96 bg-white shadow-2xl border-l z-40 flex flex-col transform transition-transform">
+                <div className="p-6 border-b bg-white flex-shrink-0">
+                    <div className="flex justify-between items-start mb-2">
+                        <h2 className="text-xl font-serif font-bold">{selectedNode.label}</h2>
+                        <button onClick={() => setSelectedNode(null)} className="hover:bg-gray-100 p-1 rounded-full"><X size={20}/></button>
                     </div>
-                    
-                    {selectedNode.wiki && (
-                        <a 
-                            href={selectedNode.wiki} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-xs text-blue-600 hover:underline mb-4"
-                        >
-                            <ExternalLink size={12} />
-                            Read on Wikipedia
-                        </a>
-                    )}
 
-                    <hr className="border-gray-100"/>
-                    
-                    {/* Render Structured Sections */}
-                    {selectedNode.sections && selectedNode.sections.map((section, idx) => (
-                        <div key={idx} className="mb-4">
-                            <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider mb-1">
-                                {section.title}
-                            </h3>
-                            <p className="text-gray-600 text-sm leading-relaxed">
-                                {section.content}
-                            </p>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex justify-between items-center">
+                            <span className="inline-block px-2 py-1 text-xs font-semibold bg-gray-100 rounded uppercase tracking-wide">
+                                {selectedNode.type}
+                            </span>
+                            <span className="text-sm text-gray-500 font-mono">{selectedNode.date}</span>
                         </div>
-                    ))}
-                    
-                    {/* Fallback for legacy desc string if any */}
-                    {selectedNode.desc && !selectedNode.sections && (
-                         <div className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">
-                            {selectedNode.desc}
-                        </div>
-                    )}
+                        
+                        {selectedNode.wiki && (
+                            <a 
+                                href={selectedNode.wiki} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 text-xs text-blue-600 hover:underline"
+                            >
+                                <ExternalLink size={12} />
+                                Read on Wikipedia
+                            </a>
+                        )}
+                    </div>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto p-6">
+                    <div className="space-y-4">
+                        {nodeImage && (
+                            <div className="mb-4">
+                                 <img 
+                                    src={nodeImage} 
+                                    alt={selectedNode.label} 
+                                    className="w-full h-auto max-h-64 object-cover rounded-lg shadow-sm"
+                                 />
+                            </div>
+                        )}
+
+                        <hr className="border-gray-100"/>
+                        
+                        {/* Render Structured Sections */}
+                        {selectedNode.sections && selectedNode.sections.map((section, idx) => (
+                            <div key={idx} className="mb-4">
+                                <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wider mb-1">
+                                    {section.title}
+                                </h3>
+                                <p className="text-gray-600 text-sm leading-relaxed">
+                                    {section.content}
+                                </p>
+                            </div>
+                        ))}
+                        
+                        {/* Fallback for legacy desc string if any */}
+                        {selectedNode.desc && !selectedNode.sections && (
+                             <div className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">
+                                {selectedNode.desc}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         )}
