@@ -486,11 +486,11 @@ export default function InteractiveStoic() {
 
         {/* Legend */}
         <div className={`absolute bottom-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
-            md:right-24 md:opacity-100 md:translate-y-0 md:pointer-events-auto
+            md:right-32 md:opacity-100 md:translate-y-0 md:pointer-events-auto
             ${isLegendOpen ? 'left-6 opacity-100 translate-y-0' : 'left-6 opacity-0 translate-y-10 pointer-events-none md:opacity-100 md:translate-y-0'}
         `}>
             <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 md:grid-cols-1 md:gap-y-2">
+            <div className="grid grid-cols-1 gap-y-1 md:grid-cols-2 md:gap-x-2">
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-gray-200"></div> Socratic</div>
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-stone-200"></div> Cynic</div>
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-blue-100"></div> Stoic</div>
