@@ -24,8 +24,11 @@ export default function InteractiveStoic() {
         const w = containerRef.current.offsetWidth;
         const h = containerRef.current.offsetHeight;
         setDimensions({ w, h });
-        // Center the view initially
-        setViewState({ scale: 0.6, x: w/2 - 600, y: 0 });
+        // Center the view initially based on current width and scale 0.6
+        // We want node at w/2 to appear at w/2 on screen.
+        // ScreenX = WorldX * scale + TranslateX
+        // w/2 = (w/2) * 0.6 + tx  =>  tx = w/2 * (1 - 0.6)
+        setViewState({ scale: 0.6, x: (w/2) * 0.4, y: 0 });
     }
   }, []);
 
@@ -89,22 +92,39 @@ export default function InteractiveStoic() {
     setSelectedNode(node);
   };
 
+  const getClientCoordinates = (e) => {
+    if (e.touches && e.touches.length > 0) {
+      return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
+  };
+
   const handleNodeMouseDown = (e, id, x, y) => {
     e.stopPropagation();
+    const { x: clientX, y: clientY } = getClientCoordinates(e);
     setDraggingId(id);
-    setOffset({ x: e.clientX / viewState.scale - x, y: e.clientY / viewState.scale - y });
+    setOffset({ x: clientX / viewState.scale - x, y: clientY / viewState.scale - y });
   };
 
   const handleMouseMove = (e) => {
+    const isTouch = e.type && e.type.startsWith('touch');
+    const coords = getClientCoordinates(e);
+
     if (draggingId) {
-       const newX = e.clientX / viewState.scale - offset.x;
-       const newY = e.clientY / viewState.scale - offset.y;
+       // On mobile, prevent scrolling while dragging a node
+       if (isTouch) e.preventDefault(); 
+       
+       const newX = coords.x / viewState.scale - offset.x;
+       const newY = coords.y / viewState.scale - offset.y;
        setNodes(prev => prev.map(n => n.id === draggingId ? { ...n, x: newX, y: newY } : n));
     } else if (isPanning) {
-       const dx = e.clientX - panStart.x;
-       const dy = e.clientY - panStart.y;
+       // On mobile, prevent scrolling while panning the canvas
+       if (isTouch) e.preventDefault();
+
+       const dx = coords.x - panStart.x;
+       const dy = coords.y - panStart.y;
        setViewState(prev => ({ ...prev, x: prev.x + dx, y: prev.y + dy }));
-       setPanStart({ x: e.clientX, y: e.clientY });
+       setPanStart({ x: coords.x, y: coords.y });
     }
   };
 
@@ -114,8 +134,10 @@ export default function InteractiveStoic() {
   };
 
   const handleCanvasMouseDown = (e) => {
+    // Check if it's a touch event to avoid double firing if both exist
+    const coords = getClientCoordinates(e);
     setIsPanning(true);
-    setPanStart({ x: e.clientX, y: e.clientY });
+    setPanStart({ x: coords.x, y: coords.y });
   };
 
   const handleSearch = (e) => {
@@ -195,7 +217,8 @@ export default function InteractiveStoic() {
 
   return (
     <div className="h-screen w-full flex flex-col bg-slate-50 overflow-hidden font-sans text-slate-900"
-         onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+         onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}
+         onTouchMove={handleMouseMove} onTouchEnd={handleMouseUp}>
         
         {/* Toolbar */}
         <div className="bg-white border-b px-4 py-3 flex justify-between items-center shadow-sm z-20">
@@ -205,7 +228,7 @@ export default function InteractiveStoic() {
                 </div>
                 <div>
                     <h1 className="font-serif font-bold text-lg">interactive_stoic</h1>
-                    <p className="text-xs text-slate-500">Drag to rearrange • Scroll to zoom • Click highlighted lines to jump</p>
+                    <p className="text-xs text-slate-500 hidden md:block">Drag to rearrange • Scroll to zoom • Click highlighted lines to jump</p>
                 </div>
             </div>
             <div className="flex gap-2">
@@ -223,6 +246,7 @@ export default function InteractiveStoic() {
         <div className="flex-1 relative cursor-grab active:cursor-grabbing bg-dot-pattern"
              ref={containerRef}
              onMouseDown={handleCanvasMouseDown}
+             onTouchStart={handleCanvasMouseDown}
              onWheel={handleWheel}
         >
             <div style={{ 
@@ -333,6 +357,7 @@ export default function InteractiveStoic() {
                     <div
                         key={node.id}
                         onMouseDown={(e) => handleNodeMouseDown(e, node.id, node.x, node.y)}
+                        onTouchStart={(e) => handleNodeMouseDown(e, node.id, node.x, node.y)}
                         onClick={(e) => {
                             e.stopPropagation();
                             focusOnNode(node);
@@ -379,7 +404,7 @@ export default function InteractiveStoic() {
         </div>
 
         {/* Legend */}
-        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs pointer-events-none z-30">
+        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs pointer-events-none z-30 hidden md:block">
             <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-gray-200"></div> Socratic</div>
@@ -393,7 +418,7 @@ export default function InteractiveStoic() {
 
         {/* Info Panel */}
         {selectedNode && (
-            <div className="absolute right-0 top-14 bottom-0 w-96 bg-white shadow-2xl border-l z-40 flex flex-col transform transition-transform">
+            <div className="absolute md:right-0 md:top-14 md:bottom-0 md:w-96 inset-0 top-14 w-full bg-white shadow-2xl border-l z-40 flex flex-col transform transition-transform">
                 <div className="p-6 border-b bg-white flex-shrink-0">
                     <div className="flex justify-between items-start mb-2">
                         <h2 className="text-xl font-serif font-bold">{selectedNode.label}</h2>
