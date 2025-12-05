@@ -441,7 +441,7 @@ export default function InteractiveStoic() {
         <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-30">
              <button 
                 onClick={() => setIsLegendOpen(!isLegendOpen)} 
-                className="p-3 bg-white rounded-full shadow-lg border border-gray-200 text-slate-700 md:hidden"
+                className="p-3 bg-white rounded-full shadow-lg border border-gray-200 text-slate-700 md:hidden absolute -left-16 bottom-0"
             >
                 {isLegendOpen ? <X size={20}/> : <Info size={20}/>}
             </button>
@@ -453,8 +453,9 @@ export default function InteractiveStoic() {
         </div>
 
         {/* Legend */}
-        <div className={`absolute bottom-6 right-6 md:right-24 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
-            ${isLegendOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none md:opacity-100 md:translate-y-0 md:pointer-events-auto'}
+        <div className={`absolute bottom-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
+            md:right-24 md:opacity-100 md:translate-y-0 md:pointer-events-auto
+            ${isLegendOpen ? 'left-6 opacity-100 translate-y-0' : 'left-6 opacity-0 translate-y-10 pointer-events-none md:opacity-100 md:translate-y-0'}
         `}>
             <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1">
