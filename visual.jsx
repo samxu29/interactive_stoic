@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ZoomIn, ZoomOut, BookOpen, X, Sword, ExternalLink, Anchor, MousePointer2 } from 'lucide-react';
+import { Search, ZoomIn, ZoomOut, BookOpen, X, Sword, ExternalLink, Anchor, MousePointer2, Info } from 'lucide-react';
 import DB from './database.json';
 import { useForceLayout } from './layout';
 
@@ -11,6 +11,7 @@ export default function InteractiveStoic() {
   const [nodes, setNodes] = useForceLayout(INITIAL_NODES, INITIAL_EDGES, dimensions.w, dimensions.h);
   const [selectedNode, setSelectedNode] = useState(null);
   const [focusedNode, setFocusedNode] = useState(null); // Sticky highlight for touch
+  const [isLegendOpen, setIsLegendOpen] = useState(false); // Mobile Legend Toggle
   const [nodeImage, setNodeImage] = useState(null); // High-res for detail view
   const [nodeThumbnails, setNodeThumbnails] = useState({}); // Low-res for graph
   const [hoveredNode, setHoveredNode] = useState(null); // NEW STATE FOR HOVER
@@ -272,12 +273,8 @@ export default function InteractiveStoic() {
             </div>
             <div className="flex gap-2">
                 <form onSubmit={handleSearch}>
-                    <input name="search" placeholder="Search..." className="bg-slate-100 px-3 py-1 rounded-full text-sm border focus:border-blue-500 outline-none" />
+                    <input name="search" placeholder="Search..." className="bg-slate-100 px-3 py-1 rounded-full text-sm border focus:border-blue-500 outline-none w-32 md:w-auto" />
                 </form>
-                <div className="flex bg-slate-100 rounded">
-                    <button onClick={() => setViewState(p => ({...p, scale: p.scale - 0.1}))} className="p-2 hover:bg-white"><ZoomOut size={16}/></button>
-                    <button onClick={() => setViewState(p => ({...p, scale: p.scale + 0.1}))} className="p-2 hover:bg-white"><ZoomIn size={16}/></button>
-                </div>
             </div>
         </div>
 
@@ -440,8 +437,25 @@ export default function InteractiveStoic() {
             </div>
         </div>
 
+        {/* Floating Controls (Zoom & Legend Toggle) - Visible on all screens, bottom right */}
+        <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-30">
+             <button 
+                onClick={() => setIsLegendOpen(!isLegendOpen)} 
+                className="p-3 bg-white rounded-full shadow-lg border border-gray-200 text-slate-700 md:hidden"
+            >
+                {isLegendOpen ? <X size={20}/> : <Info size={20}/>}
+            </button>
+            
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 flex flex-col overflow-hidden">
+                <button onClick={() => setViewState(p => ({...p, scale: p.scale + 0.1}))} className="p-3 hover:bg-gray-50 border-b border-gray-100"><ZoomIn size={20}/></button>
+                <button onClick={() => setViewState(p => ({...p, scale: p.scale - 0.1}))} className="p-3 hover:bg-gray-50"><ZoomOut size={20}/></button>
+            </div>
+        </div>
+
         {/* Legend */}
-        <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs pointer-events-none z-30 hidden md:block">
+        <div className={`absolute bottom-6 left-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
+            ${isLegendOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none md:opacity-100 md:translate-y-0 md:pointer-events-auto'}
+        `}>
             <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1">
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-gray-200"></div> Socratic</div>
