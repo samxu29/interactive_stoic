@@ -10,6 +10,7 @@ export default function InteractiveStoic() {
   const [dimensions, setDimensions] = useState({ w: 0, h: 0 });
   const [nodes, setNodes] = useForceLayout(INITIAL_NODES, INITIAL_EDGES, dimensions.w, dimensions.h);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [focusedNode, setFocusedNode] = useState(null); // Sticky highlight for touch
   const [nodeImage, setNodeImage] = useState(null); // High-res for detail view
   const [nodeThumbnails, setNodeThumbnails] = useState({}); // Low-res for graph
   const [hoveredNode, setHoveredNode] = useState(null); // NEW STATE FOR HOVER
@@ -18,6 +19,8 @@ export default function InteractiveStoic() {
   const [viewState, setViewState] = useState({ scale: 0.6, x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+  
+  const lastTouchTime = useRef(0);
 
   useEffect(() => {
     if(containerRef.current) {
@@ -92,6 +95,30 @@ export default function InteractiveStoic() {
     setSelectedNode(node);
   };
 
+  const handleNodeClick = (e, node) => {
+    e.stopPropagation();
+    if (draggingId) return; // Prevent click after drag
+
+    const isTouch = (Date.now() - lastTouchTime.current < 500);
+
+    if (isTouch) {
+        // Double-tap logic for touch devices
+        if (focusedNode?.id === node.id || selectedNode?.id === node.id) {
+            // Second tap: Open details
+            setSelectedNode(node);
+        } else {
+            // First tap: Highlight connections only
+            setFocusedNode(node);
+            // Optionally clear selection if we want to "peek" without opening
+            // setSelectedNode(null); 
+        }
+    } else {
+        // Desktop: Click always opens details
+        setSelectedNode(node);
+        setFocusedNode(null);
+    }
+  };
+
   const getClientCoordinates = (e) => {
     if (e.touches && e.touches.length > 0) {
       return { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -102,6 +129,12 @@ export default function InteractiveStoic() {
   const handleNodeMouseDown = (e, id, x, y) => {
     e.stopPropagation();
     const { x: clientX, y: clientY } = getClientCoordinates(e);
+    
+    // Track touch time to distinguish click vs touch
+    if (e.type === 'touchstart') {
+        lastTouchTime.current = Date.now();
+    }
+    
     setDraggingId(id);
     setOffset({ x: clientX / viewState.scale - x, y: clientY / viewState.scale - y });
   };
@@ -138,6 +171,12 @@ export default function InteractiveStoic() {
     const coords = getClientCoordinates(e);
     setIsPanning(true);
     setPanStart({ x: coords.x, y: coords.y });
+    
+    // Clear focused node when clicking canvas (background)
+    // We do this on MouseDown so it feels responsive, but ensure we don't block panning
+    if (!isPanning && !draggingId) {
+        setFocusedNode(null);
+    }
   };
 
   const handleSearch = (e) => {
@@ -273,13 +312,14 @@ export default function InteractiveStoic() {
                         // NEW LOGIC: Visibility based on SELECTION primarily
                         const isConnectedToSelected = selectedNode && (selectedNode.id === source.id || selectedNode.id === target.id);
                         const isConnectedToHovered = hoveredNode && (hoveredNode.id === source.id || hoveredNode.id === target.id);
+                        const isConnectedToFocused = focusedNode && (focusedNode.id === source.id || focusedNode.id === target.id);
                         
                         // "Active" means highlighted. "Clickable" means connected to the currently READ card.
-                        const isHighlighted = isConnectedToSelected || isConnectedToHovered;
+                        const isHighlighted = isConnectedToSelected || isConnectedToHovered || isConnectedToFocused;
                         const isClickable = isConnectedToSelected;
                         
                         // Dim everything else if there is a focus
-                        const isGlobalDim = (selectedNode || hoveredNode) && !isHighlighted;
+                        const isGlobalDim = (selectedNode || hoveredNode || focusedNode) && !isHighlighted;
                         
                         // Colors
                         let strokeColor = isRival ? '#fca5a5' : '#cbd5e1';
@@ -358,16 +398,13 @@ export default function InteractiveStoic() {
                         key={node.id}
                         onMouseDown={(e) => handleNodeMouseDown(e, node.id, node.x, node.y)}
                         onTouchStart={(e) => handleNodeMouseDown(e, node.id, node.x, node.y)}
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            focusOnNode(node);
-                        }}
+                        onClick={(e) => handleNodeClick(e, node)}
                         onMouseEnter={() => setHoveredNode(node)}
                         onMouseLeave={() => setHoveredNode(null)}
                         className={`absolute flex flex-col items-center justify-center p-2 rounded-lg shadow-md border-2 transition-all hover:shadow-xl cursor-pointer select-none
                             ${getNodeColor(node.type)}
                             ${selectedNode?.id === node.id ? 'ring-4 ring-offset-2 ring-blue-500 scale-110 z-50' : 'z-10'}
-                            ${hoveredNode && hoveredNode.id !== node.id && selectedNode?.id !== node.id ? 'opacity-40 grayscale' : 'opacity-100'} 
+                            ${(hoveredNode || focusedNode) && (hoveredNode?.id !== node.id && focusedNode?.id !== node.id && selectedNode?.id !== node.id) ? 'opacity-40 grayscale' : 'opacity-100'} 
                         `}
                         style={{
                             left: node.x, top: node.y, width: 160, height: 70,
