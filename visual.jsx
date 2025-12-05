@@ -453,7 +453,7 @@ export default function InteractiveStoic() {
         </div>
 
         {/* Legend */}
-        <div className={`absolute bottom-6 left-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
+        <div className={`absolute bottom-6 right-6 md:right-24 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
             ${isLegendOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none md:opacity-100 md:translate-y-0 md:pointer-events-auto'}
         `}>
             <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
@@ -469,7 +469,7 @@ export default function InteractiveStoic() {
 
         {/* Info Panel */}
         {selectedNode && (
-            <div className="absolute md:right-0 md:top-14 md:bottom-0 md:w-96 inset-0 top-14 w-full bg-white shadow-2xl border-l z-40 flex flex-col transform transition-transform">
+            <div className="absolute md:left-0 md:top-14 md:bottom-0 md:w-96 inset-0 top-14 w-full bg-white shadow-2xl border-r z-40 flex flex-col transform transition-transform">
                 <div className="p-6 border-b bg-white flex-shrink-0">
                     <div className="flex justify-between items-start mb-2">
                         <h2 className="text-xl font-serif font-bold">{selectedNode.label}</h2>
