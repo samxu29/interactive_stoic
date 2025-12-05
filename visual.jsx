@@ -274,7 +274,7 @@ export default function InteractiveStoic() {
                     <BookOpen size={20} />
                 </div>
                 <div>
-                    <h1 className="font-serif font-bold text-lg whitespace-nowrap">Interactive Stoic Tree</h1>
+                    <h1 className="font-serif font-bold text-lg md:whitespace-nowrap leading-tight">Interactive Stoic Tree</h1>
                     <p className="text-xs text-slate-500 hidden md:block">Drag to rearrange • Scroll to zoom • Click highlighted lines to jump</p>
                 </div>
             </div>
@@ -289,7 +289,7 @@ export default function InteractiveStoic() {
                         className="bg-slate-100 px-3 py-1 rounded-full text-sm border focus:border-blue-500 outline-none w-32 md:w-48 transition-all" 
                     />
                     {isSearchFocused && searchQuery && filteredNodes.length > 0 && (
-                        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden w-48 -left-16 md:left-0 md:w-full">
                             {filteredNodes.map(node => (
                                 <div 
                                     key={node.id}
