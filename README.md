@@ -1,6 +1,15 @@
 # Interactive Stoic
+> **Note**  This project was made just for fun, feel free to use, remix, or share it as you like!
+
 
 **Interactive Stoic** is an interactive web-based visualization tool that maps the genealogy and intellectual network of Stoic philosophy. It explores the connections between ancient philosophers, their schools (Stoicism, Cynicism, Academy, etc.), and their historical relationships (Teacher, Student, Rival, Influence).
+
+## Demo
+
+<p align="center">
+  <img src="images/desktop_view.png" alt="Desktop View" height="240" style="display:inline-block;margin-right:10px;vertical-align:top;" />
+  <img src="images/mobile_view.png" alt="Mobile View" height="240" style="display:inline-block;vertical-align:top;" />
+</p>
 
 ## Features
 
@@ -25,6 +34,11 @@
 -   **Custom Force Layout**: A specialized physics engine hook for generation-based graph organization.
 
 ## Getting Started
+
+### Live Demo
+Check out the live webpage here [https://samxu29.github.io/interactive_stoic/](https://samxu29.github.io/interactive_stoic/)
+
+### Local Development
 
 1.  **Install Dependencies**:
     ```bash
