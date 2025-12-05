@@ -471,26 +471,26 @@ export default function InteractiveStoic() {
 
         {/* Floating Controls (Zoom & Legend Toggle) - Visible on all screens, bottom right */}
         <div className="absolute bottom-6 right-6 flex flex-col gap-2 z-30">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 flex flex-col overflow-hidden">
+                <button onClick={() => setViewState(p => ({...p, scale: p.scale + 0.1}))} className="p-3 hover:bg-gray-50 border-b border-gray-100"><ZoomIn size={20}/></button>
+                <button onClick={() => setViewState(p => ({...p, scale: p.scale - 0.1}))} className="p-3 hover:bg-gray-50"><ZoomOut size={20}/></button>
+            </div>
+            
              <button 
                 onClick={() => setIsLegendOpen(!isLegendOpen)} 
                 className="p-3 bg-white rounded-full shadow-lg border border-gray-200 text-slate-700 md:hidden"
             >
                 {isLegendOpen ? <X size={20}/> : <Info size={20}/>}
             </button>
-            
-            <div className="bg-white rounded-lg shadow-lg border border-gray-200 flex flex-col overflow-hidden">
-                <button onClick={() => setViewState(p => ({...p, scale: p.scale + 0.1}))} className="p-3 hover:bg-gray-50 border-b border-gray-100"><ZoomIn size={20}/></button>
-                <button onClick={() => setViewState(p => ({...p, scale: p.scale - 0.1}))} className="p-3 hover:bg-gray-50"><ZoomOut size={20}/></button>
-            </div>
         </div>
 
         {/* Legend */}
-        <div className={`absolute bottom-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200
+        <div className={`absolute bottom-6 bg-white/90 backdrop-blur p-3 rounded-xl border shadow-lg text-xs z-30 transition-all duration-200 w-auto max-w-[200px]
             md:right-32 md:opacity-100 md:translate-y-0 md:pointer-events-auto
             ${isLegendOpen ? 'left-6 opacity-100 translate-y-0' : 'left-6 opacity-0 translate-y-10 pointer-events-none md:opacity-100 md:translate-y-0'}
         `}>
             <h4 className="font-bold mb-2 text-slate-400 uppercase">Key</h4>
-            <div className="grid grid-cols-1 gap-y-1 md:grid-cols-2 md:gap-x-2">
+            <div className="grid grid-cols-1 gap-y-2">
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-gray-200"></div> Socratic</div>
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-stone-200"></div> Cynic</div>
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded bg-blue-100"></div> Stoic</div>
