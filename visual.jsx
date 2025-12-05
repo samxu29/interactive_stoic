@@ -86,60 +86,7 @@ export default function InteractiveStoic() {
   }, [selectedNode]);
 
   const focusOnNode = (node) => {
-      setSelectedNode(node);
-      
-      // 1. Find all connected nodes (neighbors)
-      const connectedNodeIds = new Set();
-      connectedNodeIds.add(node.id); // Include self
-      
-      INITIAL_EDGES.forEach(edge => {
-          if (edge.source === node.id) connectedNodeIds.add(edge.target);
-          if (edge.target === node.id) connectedNodeIds.add(edge.source);
-      });
-      
-      // 2. Calculate Bounding Box of this cluster
-      let minX = node.x, maxX = node.x;
-      let minY = node.y, maxY = node.y;
-      
-      nodes.forEach(n => {
-          if (connectedNodeIds.has(n.id)) {
-              minX = Math.min(minX, n.x);
-              maxX = Math.max(maxX, n.x);
-              minY = Math.min(minY, n.y);
-              maxY = Math.max(maxY, n.y);
-          }
-      });
-      
-      // Add some padding to the box
-      const PADDING = 150;
-      const boxW = (maxX - minX) + PADDING * 2;
-      const boxH = (maxY - minY) + PADDING * 2;
-      const boxCenterX = (minX + maxX) / 2;
-      const boxCenterY = (minY + maxY) / 2;
-
-      // 3. Calculate Scale to fit
-      // Available view area (subtracting sidebar)
-      const panelWidth = 384; 
-      const availableW = dimensions.w - panelWidth;
-      const availableH = dimensions.h;
-      
-      // Scale fitting both width and height, capped at 1.2 for close-ups and 0.2 for large groups
-      let targetScale = Math.min(availableW / boxW, availableH / boxH);
-      targetScale = Math.min(Math.max(targetScale, 0.2), 1.2); 
-
-      // 4. Center the view on the Box Center
-      // Logic: ScreenCenter = (WorldCenter + Pan) * Scale
-      // Pan = (ScreenCenter / Scale) - WorldCenter
-      
-      // Target screen center is the middle of the available space
-      const screenCenterX = availableW / 2;
-      const screenCenterY = availableH / 2;
-
-      setViewState({ 
-          scale: targetScale, 
-          x: (screenCenterX / targetScale) - boxCenterX, 
-          y: (screenCenterY / targetScale) - boxCenterY 
-      });
+    setSelectedNode(node);
   };
 
   const handleNodeMouseDown = (e, id, x, y) => {
