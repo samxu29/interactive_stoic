@@ -20,6 +20,8 @@ export default function InteractiveStoic() {
   const [viewState, setViewState] = useState({ scale: 0.6, x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [panStart, setPanStart] = useState({ x: 0, y: 0 });
+  const [searchQuery, setSearchQuery] = useState(''); // Search state
+  const [isSearchFocused, setIsSearchFocused] = useState(false); // Search focus state
   
   const lastTouchTime = useRef(0);
 
@@ -182,17 +184,22 @@ export default function InteractiveStoic() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const query = e.target.search.value.toLowerCase();
-    if (!query) return;
+    if (!searchQuery) return;
     
     // Check if nodes are loaded
     if (!nodes || nodes.length === 0) return;
 
-    const found = nodes.find(n => n.label.toLowerCase().includes(query));
+    const found = nodes.find(n => n.label.toLowerCase().includes(searchQuery.toLowerCase()));
     if (found) {
         focusOnNode(found);
+        setSearchQuery(''); // Clear search after finding
+        setIsSearchFocused(false);
     }
   };
+
+  const filteredNodes = searchQuery 
+    ? nodes.filter(n => n.label.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 5)
+    : [];
 
   const getNodeColor = (type) => {
     switch(type) {
@@ -267,13 +274,38 @@ export default function InteractiveStoic() {
                     <BookOpen size={20} />
                 </div>
                 <div>
-                    <h1 className="font-serif font-bold text-lg">interactive_stoic</h1>
+                    <h1 className="font-serif font-bold text-lg whitespace-nowrap">Interactive Stoic Tree</h1>
                     <p className="text-xs text-slate-500 hidden md:block">Drag to rearrange • Scroll to zoom • Click highlighted lines to jump</p>
                 </div>
             </div>
-            <div className="flex gap-2">
-                <form onSubmit={handleSearch}>
-                    <input name="search" placeholder="Search..." className="bg-slate-100 px-3 py-1 rounded-full text-sm border focus:border-blue-500 outline-none w-32 md:w-auto" />
+            <div className="flex gap-2 relative">
+                <form onSubmit={handleSearch} className="relative z-50">
+                    <input 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onFocus={() => setIsSearchFocused(true)}
+                        onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)} // Delay to allow click
+                        placeholder="Search..." 
+                        className="bg-slate-100 px-3 py-1 rounded-full text-sm border focus:border-blue-500 outline-none w-32 md:w-48 transition-all" 
+                    />
+                    {isSearchFocused && searchQuery && filteredNodes.length > 0 && (
+                        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+                            {filteredNodes.map(node => (
+                                <div 
+                                    key={node.id}
+                                    className="px-3 py-2 text-sm hover:bg-blue-50 cursor-pointer text-slate-700 flex items-center gap-2"
+                                    onClick={() => {
+                                        focusOnNode(node);
+                                        setSearchQuery('');
+                                        setIsSearchFocused(false);
+                                    }}
+                                >
+                                    <div className={`w-2 h-2 rounded-full ${getNodeColor(node.type).split(' ')[0]}`}></div>
+                                    {node.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </form>
             </div>
         </div>
